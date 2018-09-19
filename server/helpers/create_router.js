@@ -1,5 +1,5 @@
 const express = require('express');
-const ObjectId = require('mongodb').ObjectID;
+const ObjectID = require('mongodb').ObjectID;
 
 const createRouter = function (activities) {
 
@@ -26,33 +26,71 @@ const createRouter = function (activities) {
     .toArray()
     .then((docs) => res.json(docs))
     .catch((err) => {
-        console.error(err);
-        res.status(500);
-        res.json({ status: 500, error: err });
-      });
+      console.error(err);
+      res.status(500);
+      res.json({ status: 500, error: err });
+    });
   });
 
-  router.post('/', () => {
-    
-  })
+  router.post('/', (req, res) => {
+    const newData = req.body;
+    activities
+    .insertOne(newData)
+    .then(() => {
+      activities
+      .find().toArray()
+      .then((docs) => {
+        res.json(docs)
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500);
+        res.json({ status: 500, error: err })
+      });
 
-  router.delete('/:id', (req, res) => {
+    });
+
+  });
+
+  router.put('/:id', (req, res) => {
     const id = req.params.id;
-    collection
-      .deleteOne({ _id: ObjectID(id) })
+    const updatedData = req.body;
+    activities
+      .updateOne(
+        {_id: ObjectID(id)},
+        {$set: updatedData}
+      )
       .then(() => {
-        collection
-          .find()
-          .toArray()
-          .then((docs) => res.json(docs));
+        activities
+        .find()
+        .toArray()
+        .then((docs) => res.json(docs));
       })
       .catch((err) => {
         console.error(err);
         res.status(500);
         res.json({ status: 500, error: err });
       });
+    });
+
+
+  router.delete('/:id', (req, res) => {
+    const id = req.params.id;
+    activities
+    .deleteOne({ _id: ObjectID(id) })
+    .then(() => {
+      activities
+      .find()
+      .toArray()
+      .then((docs) => res.json(docs));
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500);
+      res.json({ status: 500, error: err });
+    });
   });
-return router
+  return router;
 };
 
 module.exports = createRouter;
