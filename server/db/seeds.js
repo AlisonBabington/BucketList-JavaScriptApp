@@ -3,13 +3,13 @@ db.dropDatabase();
 
 db.activities.insertMany([
 {
-  item: "Climb Everest",
+  name: "Climb Everest",
   status: "To Do"
 },{
-  item: "Visit Macchu Picchu",
+  name: "Visit Macchu Picchu",
   status: "To Do"
 }, {
-  item: "Go Skydiving",
+  name: "Go Skydiving",
   status: "To Do"
 }
 

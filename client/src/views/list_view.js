@@ -7,6 +7,7 @@ const ListView = function (container) {
 
 ListView.prototype.bindEvents = function () {
   PubSub.subscribe('BucketList:data-loaded', (evt) => {
+    console.log(evt);
     this.render(evt.detail);
   });
 };
