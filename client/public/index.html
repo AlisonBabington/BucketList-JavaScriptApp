@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Bucket List</title>
+    <script src="/js/bundle.js"></script>
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body>
+    <h1>Bucket List</h1>
+    <h2>Add an item to bucket list</h2>
+    <form id="list-form">
+
+        <label for="name">Name:</label>
+        <input type="text" id="name"/>
+
+        <select id="staus">
+          <option value="ongoing" selected>Ongoing</option>
+          <option value="completed">Completed</option>
+        </select>
+
+      <input type="submit" value="save" id="save"/>
+    </form>
+
+    <h2>List</h2>
+    <div id="list"></div>
+  </body>
+</html>
