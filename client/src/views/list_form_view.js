@@ -20,7 +20,7 @@ ListFormView.prototype.handleSubmit = function (evt) {
 ListFormView.prototype.createItem = function (form) {
   const newItem = {
     name: form.name.value,
-    status: form.status.value,
+    status: false
   };
 
   return newItem;

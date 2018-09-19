@@ -11,11 +11,13 @@ ListItemView.prototype.render = function (item) {
   const name = this.createName(item.name);
   itemContainer.appendChild(name);
 
-  const status = this.createStatus(item.status);
-  itemContainer.appendChild(name);
-
-  const statusButton = this.createStatusButton(item._id);
-  itemContainer.appendChild(statusButton);
+  const status = this.createStatusBox(item.status);
+  status.id = item._id;
+  const label = document.createElement('label');
+  label.htmlfor = status.id;
+  label.textContent = "Achieved:"
+  itemContainer.appendChild(label);
+  itemContainer.appendChild(status);
 
   const deleteButton = this.createDeleteButton(item._id);
   itemContainer.appendChild(deleteButton);
@@ -29,26 +31,26 @@ ListItemView.prototype.createName = function (textContent) {
   return name;
 };
 
-ListItemView.prototype.createStatus = function (textContent) {
-  const status = document.createElement('p');
-  status.textContent = textContent;
-  return status;
+
+ListItemView.prototype.createStatusBox = function (itemvalue) {
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.classList.add('status-box');
+  if (itemvalue === true) checkbox.checked = 'true';
+  checkbox.addEventListener('change', (evt) => {
+    this.handleCheckBox(evt)
+  });
+  return checkbox;
 };
 
-ListItemView.prototype.createStatusButton = function (itemId) {
-  const button = document.createElement('button');
-  button.classList.add('status-button');
-  button.value = itemId;
-  button.textContent = "Change Status";
-  button.addEventListener('click', (evt) => {
-    PubSub.publish('ListItemView:status-changed', evt.target.value);
-  });
-  return button;
+ListItemView.prototype.handleCheckBox = function (evt) {
+  PubSub.publish('ListItemView:status-changed', evt);
+  evt.target.checked = "true";
 };
 
 ListItemView.prototype.createDeleteButton = function (itemId) {
-  const button = document.createElement('delete-button');
-  button.classList.add('button');
+  const button = document.createElement('button');
+  button.classList.add('delete-button');
   button.value = itemId;
   button.textContent = "Delete";
   button.addEventListener('click', (evt) => {

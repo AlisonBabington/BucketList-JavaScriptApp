@@ -53,6 +53,7 @@ const createRouter = function (activities) {
   });
 
   router.put('/:id', (req, res) => {
+    // console.log(req);
     const id = req.params.id;
     const updatedData = req.body;
     activities

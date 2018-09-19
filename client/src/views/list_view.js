@@ -7,13 +7,14 @@ const ListView = function (container) {
 
 ListView.prototype.bindEvents = function () {
   PubSub.subscribe('BucketList:data-loaded', (evt) => {
-    console.log(evt);
     this.render(evt.detail);
   });
 };
 
 ListView.prototype.render = function (list) {
   this.container.innerHTML = '';
+  console.log(list);
+  const sortList = list.sort( (a,b) => a.status - b.status)
   const listItemView = new ListItemView(this.container);
   list.forEach((item) => listItemView.render(item));
 };

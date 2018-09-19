@@ -24,9 +24,12 @@ Request.prototype.delete = function (id) {
 };
 
 // not required?? - to be tested
-Request.prototype.put = function (id) {
+Request.prototype.put = function (id, payload) {
+
   return fetch(`${this.url}/${id}`, {
-    method: 'UPDATE'
+    method: 'PUT',
+    body: JSON.stringify(payload),
+    headers: { 'Content-Type': 'application/json' }
   })
     .then((response) => response.json());
 };

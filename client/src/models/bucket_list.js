@@ -46,11 +46,15 @@ BucketList.prototype.deleteItem = function (itemId) {
     .catch(console.error);
 };
 
-BucketList.prototype.changeItemStatus = function (itemId) {
+BucketList.prototype.changeItemStatus = function (item) {
   const request = new Request(this.url);
-  request.put(itemId)
-    .then((list) => {
-      PubSub.publish('BucketList:data-loaded', list);
+  const id = item.target.id
+  const body = {
+    status: item.target.checked
+  }
+  request.put(id, body)
+    .then((items) => {
+      PubSub.publish('BucketList:data-loaded', items);
     })
     .catch(console.error);
 };
