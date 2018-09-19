@@ -1,24 +1,58 @@
 const express = require('express');
-const app = express();
-const path = require('path');
-const parser = require('body-parser');
-const MongoClient = require('mongodb').MongoClient;
-const createRouter = require('./helpers.create_router.js');
+const ObjectId = require('mongodb').ObjectID;
 
-const publicPath = path.join(__dirname, '../client/public');
-app.use(express.static(publicPath));
+const createRouter = function (activities) {
 
-app.use(parser.json());
+  const router = express.Router();
 
-MongoClient.connect('mongodb://localhost:27017')
-  .then((client) => {
-    const db = client.db('birds');
-    const activityCollection = db.collection('activity');
-    const activityRouter = createRouter(activityCollection);
-    app.use('/api/activities', activityRouter)
+  router.get('/', (req,res) => {
+    activities
+    .find()
+    .toArray()
+    .then((docs) => {
+      res.json(docs)
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500);
+      res.json({ status: 500, error: err });
+    });
+  });
+
+  router.get('/:id', (req,res) => {
+    const id = req.params.id;
+    activities
+    .find({_id: ObjectID(id)})
+    .toArray()
+    .then((docs) => res.json(docs))
+    .catch((err) => {
+        console.error(err);
+        res.status(500);
+        res.json({ status: 500, error: err });
+      });
+  });
+
+  router.post('/', () => {
+    
   })
-  .catch(console.err);
 
-app.listen(3000, function () {
-  console.log(`Listening on port ${ this.address().port }`);
-});
+  router.delete('/:id', (req, res) => {
+    const id = req.params.id;
+    collection
+      .deleteOne({ _id: ObjectID(id) })
+      .then(() => {
+        collection
+          .find()
+          .toArray()
+          .then((docs) => res.json(docs));
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500);
+        res.json({ status: 500, error: err });
+      });
+  });
+return router
+};
+
+module.exports = createRouter;
